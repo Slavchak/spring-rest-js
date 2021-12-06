@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>User Page</title>
+</head>
+<body>
+<!--Верхняя панель-->
+<div class="container-fluid">
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand"
+              th:text="${user.email} + ' with role: ' + ${user.roles.toString.replace('ROLE_', '').replace('[', '').replace(']', '')}">
+        </span>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!--боковая панель-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-white">
+            <nav class="nav flex-column nav-pills">
+                <li class="nav-item">
+                    <a href="/admin" class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user" class="nav-link active">User</a>
+                </li>
+            </nav>
+        </div>
+        <!--        таблица-->
+        <div class="col-10 bg-light">
+            <h2>User information-page</h2>
+            </br>
+            <h6>About user</h6>
+            </br>
+            <table class="table table-light table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${user.id}">ID</td>
+                    <td th:text="${user.username}">NAME</td>
+                    <td th:text="${user.lastName}">LAST_NAME</td>
+                    <td th:text="${user.age}">AGE</td>
+                    <td th:text="${user.email}">EMAIL</td>
+                    <td th:text="${user.roles.toString.replace('ROLE_', '').replace('[', '').replace(']', '')}">ROLE</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+        integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+        crossorigin="anonymous"></script>
+</body>
+</html>
