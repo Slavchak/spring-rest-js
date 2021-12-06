@@ -4,14 +4,13 @@ let roleList = []; // глобальная переменная для хран�
 getAllUsers();
 
 function getAllUsers() {
-    $.getJSON("http://localhost:8080/admin/allUsers", function (data) { // по ссылки получаем юзеров и добавляем их в дата
-        console.log('1) данные с бэка /allUsers: ', JSON.stringify(data)) // для проверки в консоли
+    $.getJSON("http://localhost:8080/admin/allUsers", function (data) {
+        console.log('1) данные с бэка /allUsers: ', JSON.stringify(data))
         let rows = '';
-        $.each(data, function (key, user) { // проходимся по юзерам (получаем юзар)
-            rows += createRows(user); // из цикла полученного юзера добавляем в строку
+        $.each(data, function (key, user) {
+            rows += createRows(user);
         });
-        $('#tableAllUsers').append(rows); //строку добавляем в таблицу
-
+        $('#tableAllUsers').append(rows);
         // получение ролей по url из json, добовляем в массив ролей
         $.ajax({
             url: '/admin/authorities',
@@ -34,7 +33,7 @@ function createRows(user) {
     user_data += '<td>' + user.age + '</td>';
     user_data += '<td>' + user.email + '</td>';
     user_data += '<td>';
-    let roles = user.authorities; // через getJSON получаем массив ролей
+    let roles = user.authorities;
     for (let role of roles) {
         user_data += role.name.replace('ROLE_', '') + ' ';
     }
@@ -60,7 +59,6 @@ function getUserRolesForEdit() {
         allRoles.push(role);
         console.log("role: " + JSON.stringify(role));
     });
-    // console.log("allRoles: " + JSON.stringify(allRoles));
     return allRoles;
 }
 
@@ -87,7 +85,6 @@ $(document).on('click', '.edit-btn', function () {
                 $('#editRole').append('<option id="' + role.id + '" ' + flag + ' name="' + role.name + '" >' +
                     role.name.replace('ROLE_', '') + '</option>')
             })
-            // $('#editModal').modal('show'); //модальное окно открывается и без этой записи
         }
     });
 });
@@ -108,7 +105,6 @@ $('#editButton').on('click', (e) => {
         roles: getUserRolesForEdit()
 
     }
-    // console.log("editUser:" + JSON.stringify(editUser));
     $.ajax({
         url: '/admin',
         method: 'PUT',
@@ -185,7 +181,6 @@ function getUserRolesForAdd() {
         allRoles.push(role);
         console.log("role: " + JSON.stringify(role));
     });
-    // console.log("allRoles: " + JSON.stringify(allRoles));
     return allRoles;
 }
 
@@ -203,13 +198,11 @@ $('.newUser').on('click', () => {
         $('#addRole').append('<option id="' + role.id + '" name="' + role.name + '">' +
             role.name.replace('ROLE_', '') + '</option>')
     })
-    // alert("in tab new user")
 })
 
 //отправляет заполненную форму с новым юзером, юзер добавляется
 $("#addNewUserButton").on('click', () => {
-    // e.preventDefault(); //Если будет вызван данный метод, то действие события по умолчанию не будет выполнено
-    // alert('check: кнопка #addNewUserButton')
+
     let newUser = {
         name: $('#name').val(),
         lastName: $('#lastName').val(),
@@ -218,7 +211,6 @@ $("#addNewUserButton").on('click', () => {
         password: $('#password').val(),
         roles: getUserRolesForAdd()
     }
-    // alert('new user:' + JSON.stringify(newUser));
 
     $.ajax({
         url: 'http://localhost:8080/admin',
@@ -227,7 +219,6 @@ $("#addNewUserButton").on('click', () => {
         data: JSON.stringify(newUser),
         contentType: 'application/json; charset=utf-8',
         success: function () {
-            // alert("add user in success")
             $('#tableAllUsers').empty();
             getAllUsers();
             $('#admin-tab').tab('show');
