@@ -13,9 +13,7 @@
 <!--Верхняя панель-->
 <div class="container-fluid">
     <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand"
-              th:text="${user.email} + ' with role: ' + ${user.roles.toString.replace('ROLE_', '').replace('[', '').replace(']', '')}">
-        </span>
+        <span class="navbar-brand" id="UserAuth"></span>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
@@ -55,14 +53,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td th:text="${user.id}">ID</td>
-                    <td th:text="${user.username}">NAME</td>
-                    <td th:text="${user.lastName}">LAST_NAME</td>
-                    <td th:text="${user.age}">AGE</td>
-                    <td th:text="${user.email}">EMAIL</td>
-                    <td th:text="${user.roles.toString.replace('ROLE_', '').replace('[', '').replace(']', '')}">ROLE</td>
-                </tr>
+                <tbody id ="tableUser"></tbody>
                 </tbody>
             </table>
         </div>
@@ -79,5 +70,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
         integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
         crossorigin="anonymous"></script>
+<script th:src="@{/user.js}"></script>
 </body>
 </html>

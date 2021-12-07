@@ -1,10 +1,32 @@
 let roleList = []; // глобальная переменная для хранения массива ролей
+$(document).ready(function () {
+    loadAuthenticadedUser();
+});
 
+function loadAuthenticadedUser() {
+    const url = 'http://localhost:8080/rest/admin/authUser';
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then(data => {
+            const roles = data.authorities;
+            let roleStr = "";
+            for (let role of roles) {
+                roleStr += role.name.replace("ROLE_", "") + " ";
+            }
+            let user = `<label class="fw-bold">${data.email}</label>
+                <label>with role:</label>
+                <label/>${roleStr}</label>`;
+
+            $('#AdminAuth').html(user);
+        })
+}
 //вызов метода получения всех юзеров и заполнения таблицы
 getAllUsers();
 
 function getAllUsers() {
-    $.getJSON("http://localhost:8080/admin/allUsers", function (data) {
+    $.getJSON("http://localhost:8080/rest/admin/allUsers", function (data) {
         console.log('1) данные с бэка /allUsers: ', JSON.stringify(data))
         let rows = '';
         $.each(data, function (key, user) {
@@ -13,7 +35,7 @@ function getAllUsers() {
         $('#tableAllUsers').append(rows);
         // получение ролей по url из json, добовляем в массив ролей
         $.ajax({
-            url: '/admin/authorities',
+            url: '/rest/admin/authorities',
             method: 'GET',
             dataType: 'json',
             success: function (roles) {
@@ -68,7 +90,7 @@ $(document).on('click', '.edit-btn', function () {
     const user_id = $(this).attr('data-id');
     console.log("editUserId: " + JSON.stringify(user_id));
     $.ajax({
-        url: '/admin/' + user_id,
+        url: '/rest/admin/' + user_id,
         method: 'GET',
         dataType: 'json',
         success: function (user) {
@@ -106,7 +128,7 @@ $('#editButton').on('click', (e) => {
 
     }
     $.ajax({
-        url: '/admin',
+        url: '/rest/admin',
         method: 'PUT',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -132,7 +154,7 @@ $(document).on('click', '.del-btn', function () {
     console.log("userId: " + JSON.stringify(user_id));
 
     $.ajax({
-        url: '/admin/' + user_id,
+        url: '/rest/admin/' + user_id,
         method: 'GET',
         dataType: 'json',
         success: function (user) {
@@ -158,7 +180,7 @@ $('#deleteButton').on('click', (e) => {
     e.preventDefault();
     let userId = $('#delId').val();
     $.ajax({
-        url: '/admin/' + userId,
+        url: '/rest/admin/' + userId,
         method: 'DELETE',
         success: function () {
             $('#' + userId).remove(); // удаляет юзера по айди
@@ -213,7 +235,7 @@ $("#addNewUserButton").on('click', () => {
     }
 
     $.ajax({
-        url: 'http://localhost:8080/admin',
+        url: 'http://localhost:8080/rest/admin',
         method: 'POST',
         dataType: 'json',
         data: JSON.stringify(newUser),

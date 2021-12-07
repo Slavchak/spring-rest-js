@@ -6,13 +6,14 @@ import com.example.restjs.springrestjs.service.RoleService;
 import com.example.restjs.springrestjs.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/rest/admin")
 public class AdminRestController {
     private final UserService userService;
     private final RoleService roleService;
@@ -31,6 +32,12 @@ public class AdminRestController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById (@PathVariable Long id) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/authUser")
+    public ResponseEntity<User> getAuthUser(Authentication auth) {
+        User user = (User) auth.getPrincipal();
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
